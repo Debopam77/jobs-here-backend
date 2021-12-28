@@ -19,6 +19,15 @@ const employeeSchema = new mongoose.Schema({
             trim: true
         },
     },
+    aboutMe : {
+        type : String,
+        required : false,
+        
+    },
+    bio : {
+        type : String,
+        required : false
+    },
     password: {
         type: String,
         required: false,
@@ -118,6 +127,8 @@ employeeSchema.methods.toJSON = function() {
             middleName : employee.name.middleName,
             lastName: employee.name.lastName
         },
+        aboutMe : employee.aboutMe,
+        bio : employee.bio,
         isAdmin : employee.isAdmin,
         isApproved : employee.isApproved,
         dateOfBirth: (employee.dateOfBirth ? employee.dateOfBirth.toLocaleDateString('IST', dayOptions) : undefined),

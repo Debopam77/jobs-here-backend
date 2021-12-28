@@ -6,7 +6,12 @@ const jobListingSchema = new mongoose.Schema({
         type : String,
         required : true,
         trim : true,
-        unique : true
+        unique : false
+    },
+    title : {
+        type : String,
+        required : true,
+        trim : true
     },
     email: {
         type: String,
@@ -38,6 +43,7 @@ jobListingSchema.methods.toJSON = function () {
 
     return {
         companyName : job.companyName,
+        title : job.title,
         email : job.email,
         experience : job.experience,
         skills : job.skills,

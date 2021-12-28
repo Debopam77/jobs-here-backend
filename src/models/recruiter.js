@@ -73,7 +73,7 @@ const recruiterSchema = new mongoose.Schema({
 })
 
 //Public details of recruiters
-recruiterSchena.methods.toJSON = function () {
+recruiterSchema.methods.toJSON = function () {
     const recruiter = this
 
     return {
