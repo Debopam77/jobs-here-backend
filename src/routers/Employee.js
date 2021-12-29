@@ -1,7 +1,17 @@
 require('../db/mongooseConnection')
 const Employee = require('../models/employee')
 const express = require('express')
+const nodemailer = require('nodemailer')
 const app = new express.Router()
+
+//Mailer function
+const transporter = nodemailer.createTransport({
+    service : "hotmail",
+    auth : {
+        user : "jobs-here-365@outlook.com",
+        pass : "Asdfg@12345"
+    }
+})
 
 //Get all employees
 app.get('/employee', async (req, res)=> {
@@ -14,12 +24,42 @@ app.get('/employee', async (req, res)=> {
     }
 })
 
+//Employee Login
+app.get('/employee/login', async(req, res)=> {
+
+    const employee = await Employee.findOne({phone : req.body.phone, password : req.body.password})
+    if (!employee){
+        res.status(400).send({error : "Wrong phone number or password"})
+        return
+    }
+    console.log(employee)
+    res.status(201).send(employee)
+})
+
 //Create employee
 app.post('/employee', async (req, res) => {
     const employee = new Employee(req.body)
     try {
+        const email = req.body.email
+        
+        //Send welcome mail to user
+        const options = {
+            from : "jobs-here-365@outlook.com",
+            to : email,
+            subject : "Nothing but a world of possibilities!",
+            text : "Welcome to Jobs-Here-365, we are glad to be of service"
+        }
+        transporter.sendMail(options, (err, info) => {
+            if(err) {
+                console.log(err)
+                return
+            }
+            console.log("Sent: "+info.response)
+        })
+
+        //Saving employee to DB
         await employee.save()
-        console.log(employee)
+
         res.status(201).send(employee)
     }catch(e) {
         console.log(e)
@@ -57,4 +97,60 @@ app.delete('/employee', async (req, res) => {
     }
 })
 
+//Forgot password - send otp to email
+app.patch('/employee/forgotPassword', async (req, res) => {
+    otp_string = 'otp'
+    employee = await Employee.findOne({email : req.body.email});
+    try {
+
+        if(!employee) {
+            res.status(404).send({ error : 'No user exists with said Email'})
+            return
+        }
+        //Generate random OTP
+        otp_value = Math.floor(((Math.random()*1000000)%1000000))
+
+        //Send Email with OTP
+        const options = {
+            from : "jobs-here-365@outlook.com",
+            to : req.body.email,
+            subject : "Your OTP for Jobs-here-365",
+            text : `Hi ${employee.name.firstName}, ${otp_value} is your otp for reseting your password
+            Do not share this with anyone!`
+        }
+        transporter.sendMail(options, (err, info) => {
+            if(err) {
+                console.log(err)
+                return
+            }
+            console.log("Sent: "+info.response)
+        })
+        
+        console.log("OTP : "+otp_value)
+        employee[otp_string] = otp_value
+        await employee.save();
+        res.send(employee)
+    }catch(e) {
+        console.log(e)
+        res.status(400).send({error : 'Couldnt update employee', message : e})
+    }    
+})
+
+//OTP validate and Change password
+app.patch('/employee/forgotPassword/otpValidate', async (req, res) => {
+    employee = await Employee.findOne({email : req.body.email});
+    try {
+        if (employee.otp !== req.body.otp) {
+            res.status(400).send({error: 'Incorrect OTP'})
+            return
+        }
+        //If otp is matched then update password
+        employee['password'] = req.body.password
+        await employee.save();
+        res.send(employee)
+    }catch(e) {
+        console.log(e)
+        res.status(400).send({error : 'Couldnt update employee', message : e})
+    }    
+})
 module.exports = app

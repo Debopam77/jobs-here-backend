@@ -110,6 +110,10 @@ const employeeSchema = new mongoose.Schema({
             require: true
         }
     }],
+    otp : {
+        type : Number,
+        trim : true
+    },
     isApproved: {
         type: Boolean,
         default : false,
