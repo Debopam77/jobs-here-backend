@@ -70,6 +70,10 @@ const recruiterSchema = new mongoose.Schema({
         required: true,
         trim: true
     },
+    otp: {
+        type: Number,
+        trim: true
+    }
 })
 
 //Public details of recruiters
