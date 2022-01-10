@@ -85,6 +85,18 @@ app.delete('/recruiter', async (req, res) => {
     }
 })
 
+//Recruiter Login
+app.post('/recruiter/login', async(req, res)=> {
+
+    const recruiter = await Recruiter.findOne({phone : req.body.phone, password : req.body.password})
+    if (!recruiter){
+        res.status(400).send({error : "Wrong phone number or password"})
+        return
+    }
+    console.log(recruiter)
+    res.status(201).send(recruiter)
+})
+
 //Forgot password - send otp to email
 app.patch('/recruiter/forgotPassword', async (req, res) => {
     otp_string = 'otp'
@@ -141,7 +153,7 @@ app.patch('/recruiter/forgotPassword/otpValidate', async (req, res) => {
         res.send(recruiter)
     }catch(e) {
         console.log(e)
-        res.status(400).send({error : 'Couldnt update employee', message : e})
+        res.status(400).send({error : 'Couldnt update recruiter', message : e})
     }    
 })
 

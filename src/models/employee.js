@@ -88,7 +88,7 @@ const employeeSchema = new mongoose.Schema({
         required: true,
         trim: true
     },
-    prefferedLocations : [{
+    preferredLocations : [{
         type : String,
         trim : true
     }],

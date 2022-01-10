@@ -25,8 +25,8 @@ app.get('/employee', async (req, res)=> {
 })
 
 //Employee Login
-app.get('/employee/login', async(req, res)=> {
-
+app.post('/employee/login', async(req, res)=> {
+    console.log(req.body)
     const employee = await Employee.findOne({phone : req.body.phone, password : req.body.password})
     if (!employee){
         res.status(400).send({error : "Wrong phone number or password"})
