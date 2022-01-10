@@ -73,10 +73,8 @@ const employeeSchema = new mongoose.Schema({
         trim : true
     },
     skills : [{
-        value : {
-            type : String,
-            trim : true
-        }
+        type : String,
+        trim : true
     }],
     isAdmin: {
         type: Boolean,
@@ -95,11 +93,9 @@ const employeeSchema = new mongoose.Schema({
         trim : true
     }],
     certificates: [{
-        value: {
-            type: String,
-            required: false,
-            trim: true
-        }
+        type: String,
+        required: false,
+        trim: true
     }],
     avatar: {
         type: Buffer
@@ -141,8 +137,8 @@ employeeSchema.methods.toJSON = function() {
         email: employee.email,
         phone: employee.phone,
         experience: employee.experience,
-        certificates: employee.certificates.map((certificate) => certificate.value),
-        skills: employee.skills.map((skill) => skill.value),
+        certificates: employee.certificates,
+        skills: employee.skills,
         avatar : employee.avatar,
         createdAt: employee.createdAt,
         updatedAt: employee.updatedAt
