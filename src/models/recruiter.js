@@ -53,7 +53,8 @@ const recruiterSchema = new mongoose.Schema({
     },
     locations : [{
         type : String,
-        required : false
+        required : false,
+        trim : true
     }],
     avatar: {
         type: Buffer

@@ -34,6 +34,10 @@ const jobListingSchema = new mongoose.Schema({
     location : {
         type : String,
         trim : true
+    },
+    phone : {
+        type : String,
+        trim : true
     }
 })
 

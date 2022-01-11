@@ -131,7 +131,7 @@ employeeSchema.methods.toJSON = function() {
         bio : employee.bio,
         isAdmin : employee.isAdmin,
         isApproved : employee.isApproved,
-        dateOfBirth: (employee.dateOfBirth ? employee.dateOfBirth.toLocaleDateString('IST', dayOptions) : undefined),
+        dateOfBirth: (employee.dateOfBirth ? employee.dateOfBirth.toLocaleDateString('IST') : undefined),
         age : (employee.dateOfBirth ? 
             (new Date(Date.now()).getFullYear() - employee.dateOfBirth.getFullYear()) : undefined ),
         email: employee.email,
