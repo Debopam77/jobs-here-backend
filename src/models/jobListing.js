@@ -53,4 +53,5 @@ jobListingSchema.methods.toJSON = function () {
 
 const jobListing = mongoose.model('JobListings', jobListingSchema)
 
+
 module.exports = jobListing
