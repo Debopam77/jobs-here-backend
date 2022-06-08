@@ -138,6 +138,7 @@ employeeSchema.methods.toJSON = function() {
         phone: employee.phone,
         experience: employee.experience,
         certificates: employee.certificates,
+        preferredLocations : employee.preferredLocations,
         skills: employee.skills,
         avatar : employee.avatar,
         createdAt: employee.createdAt,
